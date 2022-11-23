@@ -122,6 +122,11 @@ public class MainActivity extends AppCompatActivity {
                         };
                         handler2.postDelayed(runnable2, 1000);
                         return true;
+
+                    case R.id.grafik:
+                        Intent mtintent1 = new Intent(MainActivity.this, GraphActivity.class);
+                        startActivity(mtintent1);
+                        return true;
                     default:
                         return true;
                 }
@@ -161,7 +166,7 @@ public class MainActivity extends AppCompatActivity {
                 loop();
             }
         };
-        handler.postDelayed(runnable, 1000);
+        handler.postDelayed(runnable, 10000);
     }
 
     private void loopNotification() {
@@ -196,19 +201,16 @@ public class MainActivity extends AppCompatActivity {
 
         InterfaceAPI api = retrofit.create(InterfaceAPI.class);
 
-        Call<Respon> call = api.rp("4");
+        Call<Respon> call = api.rp("6");
 
         call.enqueue(new Callback<Respon>() {
             @Override
             public void onResponse(Call<Respon> call, Response<Respon> response) {
                 if (!response.isSuccessful()) {
-                    Toast.makeText(MainActivity.this, "dadasd", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainActivity.this, "gagal", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                Toast.makeText(MainActivity.this, "KKA", Toast.LENGTH_SHORT).show();
-
-                setelah_filter.setText(response.body().getData().getDebuAfterFilter().toString());
-                sebelum_filter.setText(response.body().getData().getDebuBeforeFilter().toString());
+                Toast.makeText(MainActivity.this, "Success", Toast.LENGTH_SHORT).show();
                 if (response.body()!= null) {
 //                    pg1.setVisibility(View.INVISIBLE);
 //                    pg2.setVisibility(View.INVISIBLE);
@@ -228,7 +230,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<Respon> call, Throwable t) {
-                Toast.makeText(MainActivity.this, t.getMessage(), Toast.LENGTH_LONG).show();
+//                Toast.makeText(MainActivity.this, t.getMessage(), Toast.LENGTH_LONG).show();
             }
         });
     }

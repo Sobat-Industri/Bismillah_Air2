@@ -55,8 +55,6 @@ public class HistoryActivity extends AppCompatActivity {
 
         history();
         sidebar();
-
-
     }
 
     private void history() {

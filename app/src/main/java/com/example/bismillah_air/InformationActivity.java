@@ -49,22 +49,18 @@ public class InformationActivity extends AppCompatActivity {
         areaChart.title("Unaudited Apple Inc. Revenue by Operating Segments");
 
         List<DataEntry> seriesData = new ArrayList<>();
-        seriesData.add(new CustomDataEntry("Q2 2014", 17.982, 10.941, 9.835, 4.047, 2.841));
-        seriesData.add(new CustomDataEntry("Q3 2014", 17.574, 8.659, 6.230, 2.627, 2.242));
-        seriesData.add(new CustomDataEntry("Q4 2014", 19.75, 10.35, 6.292, 3.595, 2.136));
-        seriesData.add(new CustomDataEntry("Q1 2015", 30.6, 17.2, 16.1, 5.4, 5.2));
-        seriesData.add(new CustomDataEntry("Q2 2015", 21.316, 12.204, 16.823, 3.457, 4.210));
-        seriesData.add(new CustomDataEntry("Q3 2015", 20.209, 10.342, 13.23, 2.872, 2.959));
-        seriesData.add(new CustomDataEntry("Q4 2015", 21.773, 10.577, 12.518, 3.929, 2.704));
-        seriesData.add(new CustomDataEntry("Q1 2016", 29.3, 17.9, 18.4, 4.8, 5.4));
+        seriesData.add(new CustomDataEntry("Q2 2014", 17.982));
+        seriesData.add(new CustomDataEntry("Q3 2014", 17.574));
+        seriesData.add(new CustomDataEntry("Q4 2014", 19.75));
+        seriesData.add(new CustomDataEntry("Q1 2015", 30.6));
+        seriesData.add(new CustomDataEntry("Q2 2015", 21.316));
+        seriesData.add(new CustomDataEntry("Q3 2015", 20.209));
+        seriesData.add(new CustomDataEntry("Q4 2015", 21.773));
+        seriesData.add(new CustomDataEntry("Q1 2016", 29.3));
 
         Set set = Set.instantiate();
         set.data(seriesData);
         Mapping series1Data = set.mapAs("{ x: 'x', value: 'value' }");
-        Mapping series2Data = set.mapAs("{ x: 'x', value: 'value2' }");
-        Mapping series3Data = set.mapAs("{ x: 'x', value: 'value3' }");
-        Mapping series4Data = set.mapAs("{ x: 'x', value: 'value4' }");
-        Mapping series5Data = set.mapAs("{ x: 'x', value: 'value5' }");
 
         Area series1 = areaChart.area(series1Data);
         series1.name("Americas");
@@ -76,50 +72,6 @@ public class InformationActivity extends AppCompatActivity {
                 .size(4d)
                 .stroke("1.5 #fff");
         series1.markers().zIndex(100d);
-
-        Area series2 = areaChart.area(series2Data);
-        series2.name("Europe");
-        series2.stroke("3 #fff");
-        series2.hovered().stroke("3 #fff");
-        series2.hovered().markers().enabled(true);
-        series2.hovered().markers()
-                .type(MarkerType.CIRCLE)
-                .size(4d)
-                .stroke("1.5 #fff");
-        series2.markers().zIndex(100d);
-
-        Area series3 = areaChart.area(series3Data);
-        series3.name("Greater China");
-        series3.stroke("3 #fff");
-        series3.hovered().stroke("3 #fff");
-        series3.hovered().markers().enabled(true);
-        series3.hovered().markers()
-                .type(MarkerType.CIRCLE)
-                .size(4d)
-                .stroke("1.5 #fff");
-        series3.markers().zIndex(100d);
-
-        Area series4 = areaChart.area(series4Data);
-        series4.name("Japan");
-        series4.stroke("3 #fff");
-        series4.hovered().stroke("3 #fff");
-        series4.hovered().markers().enabled(true);
-        series4.hovered().markers()
-                .type(MarkerType.CIRCLE)
-                .size(4d)
-                .stroke("1.5 #fff");
-        series4.markers().zIndex(100d);
-
-        Area series5 = areaChart.area(series5Data);
-        series5.name("Rest of Asia Pacific");
-        series5.stroke("3 #fff");
-        series5.hovered().stroke("3 #fff");
-        series5.hovered().markers().enabled(true);
-        series5.hovered().markers()
-                .type(MarkerType.CIRCLE)
-                .size(4d)
-                .stroke("1.5 #fff");
-        series5.markers().zIndex(100d);
 
         areaChart.legend().enabled(true);
         areaChart.legend().fontSize(13d);
@@ -138,12 +90,8 @@ public class InformationActivity extends AppCompatActivity {
     }
 
     private class CustomDataEntry extends ValueDataEntry {
-        CustomDataEntry(String x, Number value, Number value2, Number value3, Number value4, Number value5) {
+        CustomDataEntry(String x, Number value) {
             super(x, value);
-            setValue("value2", value2);
-            setValue("value3", value3);
-            setValue("value4", value4);
-            setValue("value5", value5);
         }
     }
 }
