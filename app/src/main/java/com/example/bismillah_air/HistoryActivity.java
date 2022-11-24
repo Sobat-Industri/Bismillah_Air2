@@ -41,6 +41,7 @@ public class HistoryActivity extends AppCompatActivity {
     private ActionBarDrawerToggle t;
     private NavigationView nv;
     private RecyclerView recyclerView;
+
     ProgressBar pg1;
 
     @Override

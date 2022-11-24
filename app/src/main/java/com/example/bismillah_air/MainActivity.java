@@ -144,8 +144,8 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-        st_filter();
-        loop();
+//        st_filter();
+//        loop();
         loopNotification();
 
     }
