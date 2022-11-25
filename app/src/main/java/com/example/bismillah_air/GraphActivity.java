@@ -16,15 +16,29 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import com.anychart.AnyChart;
+import com.anychart.AnyChartView;
+import com.anychart.chart.common.dataentry.DataEntry;
+import com.anychart.chart.common.dataentry.ValueDataEntry;
+import com.anychart.charts.Cartesian;
+import com.anychart.core.cartesian.series.Area;
+import com.anychart.core.ui.Crosshair;
+import com.anychart.data.Mapping;
+import com.anychart.data.Set;
+import com.anychart.enums.HoverMode;
+import com.anychart.enums.MarkerType;
+import com.anychart.enums.ScaleStackMode;
+import com.anychart.enums.TooltipDisplayMode;
+import com.anychart.graphics.vector.Stroke;
 import com.example.bismillah_air.API.History;
 import com.example.bismillah_air.API.InterfaceAPI;
 import com.example.bismillah_air.Adapter.GrafikAdapter;
-import com.example.bismillah_air.Adapter.HistoryAdapter;
 import com.example.bismillah_air.Utility.NetworkChangeListener;
 import com.google.android.material.navigation.NavigationView;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import okhttp3.OkHttpClient;
@@ -40,16 +54,76 @@ public class GraphActivity extends AppCompatActivity {
     private ActionBarDrawerToggle t;
     private NavigationView nv;
     private RecyclerView recyclerView;
+    private List<History> arraylist;
+    private List<CustomDataEntry> seriesData;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_graph);
-        recyclerView = findViewById(R.id.recyclerview);
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        arraylist = new ArrayList<>();
         sidebar();
         history();
+//        grafik();
+    }
+
+    private void grafik() {
+        AnyChartView anyChartView = findViewById(R.id.any_chart_view);
+        anyChartView.setProgressBar(findViewById(R.id.progress_bar));
+
+        Cartesian areaChart = AnyChart.area();
+
+        areaChart.animation(true);
+
+        Crosshair crosshair = areaChart.crosshair();
+        crosshair.enabled(true);
+        // TODO yStroke xStroke in crosshair
+        crosshair.yStroke((Stroke) null, null, null, (String) null, (String) null)
+                .xStroke("#fff", 1d, null, (String) null, (String) null)
+                .zIndex(39d);
+        crosshair.yLabel(0).enabled(true);
+
+        areaChart.yScale().stackMode(ScaleStackMode.VALUE);
+
+        areaChart.title("Unaudited Apple Inc. Revenue by Operating Segments");
+
+
+//        seriesData = new ArrayList<>();
+        List<DataEntry> seriesData = new ArrayList<>();
+//        seriesData.add(new CustomDataEntry("1986", 3.6));
+        history();
+
+//        seriesData.add(new GraphActivity.CustomDataEntry("1990", 10));
+
+        Set set = Set.instantiate();
+        set.data(seriesData);
+        Mapping series1Data = set.mapAs("{ x: 'x', value: 'value' }");
+
+        Area series1 = areaChart.area(series1Data);
+        series1.name("Sesudah Difilter");
+        series1.stroke("3 #fff");
+        series1.hovered().stroke("3 #fff");
+        series1.hovered().markers().enabled(true);
+        series1.hovered().markers()
+                .type(MarkerType.CIRCLE)
+                .size(4d)
+                .stroke("1.5 #fff");
+        series1.markers().zIndex(100d);
+
+        areaChart.legend().enabled(true);
+        areaChart.legend().fontSize(13d);
+        areaChart.legend().padding(0d, 0d, 20d, 0d);
+
+        areaChart.xAxis(0).title(false);
+        areaChart.yAxis(0).title("Kadar Debu Di Udara");
+
+        areaChart.interactivity().hoverMode(HoverMode.BY_X);
+        areaChart.tooltip()
+                .valuePrefix("")
+                .valuePostfix(" bln.")
+                .displayMode(TooltipDisplayMode.UNION);
+
+        anyChartView.setChart(areaChart);
     }
 
     private void sidebar() {
@@ -74,14 +148,19 @@ public class GraphActivity extends AppCompatActivity {
                 switch(id)
                 {
                     case R.id.home:
-//                        Intent mtintent = new Intent(HistoryActivity.this, MainActivity.class);
-//                        startActivity(mtintent);
+                        Intent mtintent = new Intent(GraphActivity.this, MainActivity.class);
+                        startActivity(mtintent);
+                        finish();
                         return true;
                     case R.id.information:
-//                        Intent mtintent1 = new Intent(HistoryActivity.this, InformationActivity.class);
-//                        startActivity(mtintent1);
+                        Intent mtintent1 = new Intent(GraphActivity.this, InformationActivity.class);
+                        startActivity(mtintent1);
+                        finish();
                         return true;
                     case R.id.history:
+                        Intent mtintent2 = new Intent(GraphActivity.this, HistoryActivity.class);
+                        startActivity(mtintent2);
+                        finish();
                         return true;
                     case R.id.grafik:
                         return true;
@@ -121,9 +200,86 @@ public class GraphActivity extends AppCompatActivity {
                 }
                 Toast.makeText(GraphActivity.this, "Success", Toast.LENGTH_SHORT).show();
 
-                List<History> postList = response.body();
-                GrafikAdapter grafikAdapter = new GrafikAdapter(GraphActivity.this,postList);
-                recyclerView.setAdapter(grafikAdapter);
+                arraylist = response.body();
+                AnyChartView anyChartView = findViewById(R.id.any_chart_view);
+                anyChartView.setProgressBar(findViewById(R.id.progress_bar));
+
+                Cartesian areaChart = AnyChart.area();
+
+                areaChart.animation(true);
+
+                Crosshair crosshair = areaChart.crosshair();
+                crosshair.enabled(true);
+                // TODO yStroke xStroke in crosshair
+                crosshair.yStroke((Stroke) null, null, null, (String) null, (String) null)
+                        .xStroke("#fff", 1d, null, (String) null, (String) null)
+                        .zIndex(39d);
+                crosshair.yLabel(0).enabled(true);
+
+                areaChart.yScale().stackMode(ScaleStackMode.VALUE);
+
+                areaChart.title("Data Kandungan debu di udara");
+
+
+//        seriesData = new ArrayList<>();
+                List<DataEntry> seriesData = new ArrayList<>();
+//        seriesData.add(new CustomDataEntry("1986", 3.6));
+                for (int i = 0; i < arraylist.size(); i++){
+                    String arr = arraylist.get(i).getDebu_before();
+                    String arr2 = arraylist.get(i).getDebu_after();
+                    int debu = Integer.parseInt(arr);
+                    int debu2 = Integer.parseInt(arr2);
+                    Toast.makeText(GraphActivity.this, arraylist.get(i).getDate_time().toString(), Toast.LENGTH_SHORT ).show();
+                    seriesData.add(new GraphActivity.CustomDataEntry(arraylist.get(i).getDate_time().toString(), debu , debu2));
+                }
+//        seriesData.add(new GraphActivity.CustomDataEntry("1990", 10));
+
+                Set set = Set.instantiate();
+                set.data(seriesData);
+                Mapping series1Data = set.mapAs("{ x: 'x', value: 'value' }");
+                Mapping series2Data = set.mapAs("{ x: 'x', value: 'value2' }");
+
+                Area series1 = areaChart.area(series1Data);
+                series1.name("Sebelum Difilter");
+                series1.stroke("3 #fff");
+                series1.hovered().stroke("3 #fff");
+                series1.hovered().markers().enabled(true);
+                series1.hovered().markers()
+                        .type(MarkerType.CIRCLE)
+                        .size(4d)
+                        .stroke("1.5 #fff");
+                series1.markers().zIndex(100d);
+
+                Area series2 = areaChart.area(series2Data);
+                series2.name("Sesudah Difilter");
+                series2.stroke("3 #fff");
+                series2.hovered().stroke("3 #fff");
+                series2.hovered().markers().enabled(true);
+                series2.hovered().markers()
+                        .type(MarkerType.CIRCLE)
+                        .size(4d)
+                        .stroke("1.5 #fff");
+                series2.markers().zIndex(100d);
+
+                areaChart.legend().enabled(true);
+                areaChart.legend().fontSize(13d);
+                areaChart.legend().padding(0d, 0d, 20d, 0d);
+
+                areaChart.xAxis(0).title(false);
+                areaChart.yAxis(0).title("Revenue (in Billons USD)");
+
+                areaChart.interactivity().hoverMode(HoverMode.BY_X);
+                areaChart.tooltip()
+                        .valuePrefix("")
+                        .valuePostfix(" kg/m³")
+                        .displayMode(TooltipDisplayMode.UNION);
+
+                anyChartView.setChart(areaChart);
+
+
+//                List<History> postList = response.body();
+//                GrafikAdapter grafikAdapter = new GrafikAdapter(GraphActivity.this,postList);
+//                recyclerView.setAdapter(grafikAdapter);
 
             }
 
@@ -150,5 +306,12 @@ public class GraphActivity extends AppCompatActivity {
         unregisterReceiver(networkChangeListener);
 //        handler.removeCallbacks(runnable);
         super.onStop();
+    }
+
+    private class CustomDataEntry extends ValueDataEntry {
+        CustomDataEntry(String x, Number value, Number value2) {
+            super(x, value);
+            setValue("value2", value2);
+        }
     }
 }

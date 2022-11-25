@@ -1,6 +1,12 @@
 package com.example.bismillah_air;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.anychart.AnyChart;
 import com.anychart.AnyChartView;
 import com.anychart.chart.common.dataentry.DataEntry;
@@ -15,83 +21,93 @@ import com.anychart.enums.MarkerType;
 import com.anychart.enums.ScaleStackMode;
 import com.anychart.enums.TooltipDisplayMode;
 import com.anychart.graphics.vector.Stroke;
+import com.example.bismillah_air.Utility.NetworkChangeListener;
+import com.google.android.material.navigation.NavigationView;
 
 import java.util.ArrayList;
 import java.util.List;
 
 
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
+import android.view.MenuItem;
+import android.view.View;
 
 public class InformationActivity extends AppCompatActivity {
+
+    NetworkChangeListener networkChangeListener = new NetworkChangeListener();
+    private ActionBarDrawerToggle t;
+    private NavigationView nv;
+    private RecyclerView recyclerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_information);
 
-        AnyChartView anyChartView = findViewById(R.id.any_chart_view);
-        anyChartView.setProgressBar(findViewById(R.id.progress_bar));
-
-        Cartesian areaChart = AnyChart.area();
-
-        areaChart.animation(true);
-
-        Crosshair crosshair = areaChart.crosshair();
-        crosshair.enabled(true);
-        // TODO yStroke xStroke in crosshair
-        crosshair.yStroke((Stroke) null, null, null, (String) null, (String) null)
-                .xStroke("#fff", 1d, null, (String) null, (String) null)
-                .zIndex(39d);
-        crosshair.yLabel(0).enabled(true);
-
-        areaChart.yScale().stackMode(ScaleStackMode.VALUE);
-
-        areaChart.title("Unaudited Apple Inc. Revenue by Operating Segments");
-
-        List<DataEntry> seriesData = new ArrayList<>();
-        seriesData.add(new CustomDataEntry("Q2 2014", 17.982));
-        seriesData.add(new CustomDataEntry("Q3 2014", 17.574));
-        seriesData.add(new CustomDataEntry("Q4 2014", 19.75));
-        seriesData.add(new CustomDataEntry("Q1 2015", 30.6));
-        seriesData.add(new CustomDataEntry("Q2 2015", 21.316));
-        seriesData.add(new CustomDataEntry("Q3 2015", 20.209));
-        seriesData.add(new CustomDataEntry("Q4 2015", 21.773));
-        seriesData.add(new CustomDataEntry("Q1 2016", 29.3));
-
-        Set set = Set.instantiate();
-        set.data(seriesData);
-        Mapping series1Data = set.mapAs("{ x: 'x', value: 'value' }");
-
-        Area series1 = areaChart.area(series1Data);
-        series1.name("Americas");
-        series1.stroke("3 #fff");
-        series1.hovered().stroke("3 #fff");
-        series1.hovered().markers().enabled(true);
-        series1.hovered().markers()
-                .type(MarkerType.CIRCLE)
-                .size(4d)
-                .stroke("1.5 #fff");
-        series1.markers().zIndex(100d);
-
-        areaChart.legend().enabled(true);
-        areaChart.legend().fontSize(13d);
-        areaChart.legend().padding(0d, 0d, 20d, 0d);
-
-        areaChart.xAxis(0).title(false);
-        areaChart.yAxis(0).title("Revenue (in Billons USD)");
-
-        areaChart.interactivity().hoverMode(HoverMode.BY_X);
-        areaChart.tooltip()
-                .valuePrefix("$")
-                .valuePostfix(" bln.")
-                .displayMode(TooltipDisplayMode.UNION);
-
-        anyChartView.setChart(areaChart);
+        sidebar();
     }
 
-    private class CustomDataEntry extends ValueDataEntry {
-        CustomDataEntry(String x, Number value) {
-            super(x, value);
-        }
+    private void sidebar() {
+        final DrawerLayout drawerlayout = findViewById(R.id.drawerlayout);
+
+        findViewById(R.id.imageMenu).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                drawerlayout.openDrawer(GravityCompat.START);
+            }
+        });
+
+//        ChangeActivity
+        t = new ActionBarDrawerToggle(this, drawerlayout, R.string.app_name, R.string.app_name);
+        t.syncState();
+
+        nv = (NavigationView)findViewById(R.id.NavigationView);
+        nv.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                int id = item.getItemId();
+                switch(id)
+                {
+                    case R.id.home:
+                        Intent mtintent = new Intent(InformationActivity.this, MainActivity.class);
+                        startActivity(mtintent);
+                        finish();
+                        return true;
+                    case R.id.information:
+                        return true;
+                    case R.id.history:
+                        Intent mtintent2 = new Intent(InformationActivity.this, HistoryActivity.class);
+                        startActivity(mtintent2);
+                        finish();
+                        return true;
+                    case R.id.grafik:
+                        Intent mtintent1 = new Intent(InformationActivity.this, GraphActivity.class);
+                        startActivity(mtintent1);
+                        finish();
+                        return true;
+                    default:
+                        return true;
+                }
+            }
+
+        });
     }
+
+    @Override
+    protected void onStart() {
+        IntentFilter filter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
+        registerReceiver(networkChangeListener, filter);
+        super.onStart();
+    }
+
+    @Override
+    protected void onStop() {
+        unregisterReceiver(networkChangeListener);
+//        handler.removeCallbacks(runnable);
+        super.onStop();
+    }
+
 }

@@ -123,12 +123,19 @@ public class HistoryActivity extends AppCompatActivity {
                     case R.id.home:
                         Intent mtintent = new Intent(HistoryActivity.this, MainActivity.class);
                         startActivity(mtintent);
+                        finish();
                         return true;
                     case R.id.information:
                         Intent mtintent1 = new Intent(HistoryActivity.this, InformationActivity.class);
                         startActivity(mtintent1);
+                        finish();
                         return true;
                     case R.id.history:
+                        return true;
+                    case R.id.grafik:
+                        Intent mtintent2 = new Intent(HistoryActivity.this, GraphActivity.class);
+                        startActivity(mtintent2);
+                        finish();
                         return true;
                     default:
                         return true;
