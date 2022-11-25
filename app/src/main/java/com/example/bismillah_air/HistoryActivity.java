@@ -77,10 +77,10 @@ public class HistoryActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<List<History>> call, Response<List<History>> response) {
                 if (!response.isSuccessful()) {
-                    Toast.makeText(HistoryActivity.this, "gagal", Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(HistoryActivity.this, "gagal", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                Toast.makeText(HistoryActivity.this, "Success", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(HistoryActivity.this, "Success", Toast.LENGTH_SHORT).show();
 //                if (response.body()!= null) {
                 pg1.setVisibility(View.INVISIBLE);
                 recyclerView.setVisibility(View.VISIBLE);

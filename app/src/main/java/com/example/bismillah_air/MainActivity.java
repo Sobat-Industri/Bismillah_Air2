@@ -101,31 +101,16 @@ public class MainActivity extends AppCompatActivity {
                     case R.id.home:
                         return true;
                     case R.id.information:
-                        Handler handler1 = new Handler();
-                        Runnable runnable1 = new Runnable() {
-                            public void run() {
-                                Intent mtintent = new Intent(MainActivity.this, InformationActivity.class);
-                                startActivity(mtintent);
-                            }
-                        };
-                        handler1.postDelayed(runnable1, 1000);
+                        Intent mtintent = new Intent(MainActivity.this, InformationActivity.class);
+                        startActivity(mtintent);
                         return true;
                     case R.id.history:
-
-
-                        Handler handler2 = new Handler();
-                        Runnable runnable2 = new Runnable() {
-                            public void run() {
-                                Intent mtintent1 = new Intent(MainActivity.this, HistoryActivity.class);
-                                startActivity(mtintent1);
-                            }
-                        };
-                        handler2.postDelayed(runnable2, 1000);
-                        return true;
-
-                    case R.id.grafik:
-                        Intent mtintent1 = new Intent(MainActivity.this, GraphActivity.class);
+                        Intent mtintent1 = new Intent(MainActivity.this, HistoryActivity.class);
                         startActivity(mtintent1);
+                        return true;
+                    case R.id.grafik:
+                        Intent mtintent2 = new Intent(MainActivity.this, GraphActivity.class);
+                        startActivity(mtintent2);
                         return true;
                     default:
                         return true;
@@ -144,8 +129,8 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-//        st_filter();
-//        loop();
+        st_filter();
+        loop();
         loopNotification();
 
     }
@@ -207,10 +192,10 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<Respon> call, Response<Respon> response) {
                 if (!response.isSuccessful()) {
-                    Toast.makeText(MainActivity.this, "gagal", Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(MainActivity.this, "gagal", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                Toast.makeText(MainActivity.this, "Success", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(MainActivity.this, "Success", Toast.LENGTH_SHORT).show();
                 if (response.body()!= null) {
 //                    pg1.setVisibility(View.INVISIBLE);
 //                    pg2.setVisibility(View.INVISIBLE);

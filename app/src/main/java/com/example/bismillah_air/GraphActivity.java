@@ -22,6 +22,7 @@ import com.anychart.chart.common.dataentry.DataEntry;
 import com.anychart.chart.common.dataentry.ValueDataEntry;
 import com.anychart.charts.Cartesian;
 import com.anychart.core.cartesian.series.Area;
+import com.anychart.core.cartesian.series.Column;
 import com.anychart.core.ui.Crosshair;
 import com.anychart.data.Mapping;
 import com.anychart.data.Set;
@@ -64,66 +65,6 @@ public class GraphActivity extends AppCompatActivity {
         arraylist = new ArrayList<>();
         sidebar();
         history();
-//        grafik();
-    }
-
-    private void grafik() {
-        AnyChartView anyChartView = findViewById(R.id.any_chart_view);
-        anyChartView.setProgressBar(findViewById(R.id.progress_bar));
-
-        Cartesian areaChart = AnyChart.area();
-
-        areaChart.animation(true);
-
-        Crosshair crosshair = areaChart.crosshair();
-        crosshair.enabled(true);
-        // TODO yStroke xStroke in crosshair
-        crosshair.yStroke((Stroke) null, null, null, (String) null, (String) null)
-                .xStroke("#fff", 1d, null, (String) null, (String) null)
-                .zIndex(39d);
-        crosshair.yLabel(0).enabled(true);
-
-        areaChart.yScale().stackMode(ScaleStackMode.VALUE);
-
-        areaChart.title("Unaudited Apple Inc. Revenue by Operating Segments");
-
-
-//        seriesData = new ArrayList<>();
-        List<DataEntry> seriesData = new ArrayList<>();
-//        seriesData.add(new CustomDataEntry("1986", 3.6));
-        history();
-
-//        seriesData.add(new GraphActivity.CustomDataEntry("1990", 10));
-
-        Set set = Set.instantiate();
-        set.data(seriesData);
-        Mapping series1Data = set.mapAs("{ x: 'x', value: 'value' }");
-
-        Area series1 = areaChart.area(series1Data);
-        series1.name("Sesudah Difilter");
-        series1.stroke("3 #fff");
-        series1.hovered().stroke("3 #fff");
-        series1.hovered().markers().enabled(true);
-        series1.hovered().markers()
-                .type(MarkerType.CIRCLE)
-                .size(4d)
-                .stroke("1.5 #fff");
-        series1.markers().zIndex(100d);
-
-        areaChart.legend().enabled(true);
-        areaChart.legend().fontSize(13d);
-        areaChart.legend().padding(0d, 0d, 20d, 0d);
-
-        areaChart.xAxis(0).title(false);
-        areaChart.yAxis(0).title("Kadar Debu Di Udara");
-
-        areaChart.interactivity().hoverMode(HoverMode.BY_X);
-        areaChart.tooltip()
-                .valuePrefix("")
-                .valuePostfix(" bln.")
-                .displayMode(TooltipDisplayMode.UNION);
-
-        anyChartView.setChart(areaChart);
     }
 
     private void sidebar() {
@@ -195,20 +136,20 @@ public class GraphActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<List<History>> call, Response<List<History>> response) {
                 if (!response.isSuccessful()) {
-                    Toast.makeText(GraphActivity.this, "gagal", Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(GraphActivity.this, "gagal", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                Toast.makeText(GraphActivity.this, "Success", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(GraphActivity.this, "Success", Toast.LENGTH_SHORT).show();
 
                 arraylist = response.body();
                 AnyChartView anyChartView = findViewById(R.id.any_chart_view);
                 anyChartView.setProgressBar(findViewById(R.id.progress_bar));
 
-                Cartesian areaChart = AnyChart.area();
+                Cartesian columnChart = AnyChart.column();
 
-                areaChart.animation(true);
+                columnChart.animation(true);
 
-                Crosshair crosshair = areaChart.crosshair();
+                Crosshair crosshair = columnChart.crosshair();
                 crosshair.enabled(true);
                 // TODO yStroke xStroke in crosshair
                 crosshair.yStroke((Stroke) null, null, null, (String) null, (String) null)
@@ -216,9 +157,9 @@ public class GraphActivity extends AppCompatActivity {
                         .zIndex(39d);
                 crosshair.yLabel(0).enabled(true);
 
-                areaChart.yScale().stackMode(ScaleStackMode.VALUE);
+                columnChart.yScale().stackMode(ScaleStackMode.VALUE);
 
-                areaChart.title("Data Kandungan debu di udara");
+                columnChart.title("Data Kandungan debu di udara");
 
 
 //        seriesData = new ArrayList<>();
@@ -229,7 +170,7 @@ public class GraphActivity extends AppCompatActivity {
                     String arr2 = arraylist.get(i).getDebu_after();
                     int debu = Integer.parseInt(arr);
                     int debu2 = Integer.parseInt(arr2);
-                    Toast.makeText(GraphActivity.this, arraylist.get(i).getDate_time().toString(), Toast.LENGTH_SHORT ).show();
+//                    Toast.makeText(GraphActivity.this, arraylist.get(i).getDate_time().toString(), Toast.LENGTH_SHORT ).show();
                     seriesData.add(new GraphActivity.CustomDataEntry(arraylist.get(i).getDate_time().toString(), debu , debu2));
                 }
 //        seriesData.add(new GraphActivity.CustomDataEntry("1990", 10));
@@ -239,7 +180,7 @@ public class GraphActivity extends AppCompatActivity {
                 Mapping series1Data = set.mapAs("{ x: 'x', value: 'value' }");
                 Mapping series2Data = set.mapAs("{ x: 'x', value: 'value2' }");
 
-                Area series1 = areaChart.area(series1Data);
+                Column series1 = columnChart.column(series1Data);
                 series1.name("Sebelum Difilter");
                 series1.stroke("3 #fff");
                 series1.hovered().stroke("3 #fff");
@@ -250,7 +191,7 @@ public class GraphActivity extends AppCompatActivity {
                         .stroke("1.5 #fff");
                 series1.markers().zIndex(100d);
 
-                Area series2 = areaChart.area(series2Data);
+                Column series2 = columnChart.column(series2Data);
                 series2.name("Sesudah Difilter");
                 series2.stroke("3 #fff");
                 series2.hovered().stroke("3 #fff");
@@ -261,20 +202,20 @@ public class GraphActivity extends AppCompatActivity {
                         .stroke("1.5 #fff");
                 series2.markers().zIndex(100d);
 
-                areaChart.legend().enabled(true);
-                areaChart.legend().fontSize(13d);
-                areaChart.legend().padding(0d, 0d, 20d, 0d);
+                columnChart.legend().enabled(true);
+                columnChart.legend().fontSize(13d);
+                columnChart.legend().padding(0d, 0d, 20d, 0d);
 
-                areaChart.xAxis(0).title(false);
-                areaChart.yAxis(0).title("Revenue (in Billons USD)");
+                columnChart.xAxis(0).title(false);
+                columnChart.yAxis(0).title("Kandungan Debu Di udara (kg/m³)");
 
-                areaChart.interactivity().hoverMode(HoverMode.BY_X);
-                areaChart.tooltip()
+                columnChart.interactivity().hoverMode(HoverMode.BY_X);
+                columnChart.tooltip()
                         .valuePrefix("")
                         .valuePostfix(" kg/m³")
                         .displayMode(TooltipDisplayMode.UNION);
 
-                anyChartView.setChart(areaChart);
+                anyChartView.setChart(columnChart);
 
 
 //                List<History> postList = response.body();
