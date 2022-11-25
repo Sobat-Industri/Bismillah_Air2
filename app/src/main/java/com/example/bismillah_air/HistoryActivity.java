@@ -41,6 +41,7 @@ public class HistoryActivity extends AppCompatActivity {
     private ActionBarDrawerToggle t;
     private NavigationView nv;
     private RecyclerView recyclerView;
+
     ProgressBar pg1;
 
     @Override
@@ -55,8 +56,6 @@ public class HistoryActivity extends AppCompatActivity {
 
         history();
         sidebar();
-
-
     }
 
     private void history() {
@@ -78,10 +77,10 @@ public class HistoryActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<List<History>> call, Response<List<History>> response) {
                 if (!response.isSuccessful()) {
-                    Toast.makeText(HistoryActivity.this, "gagal", Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(HistoryActivity.this, "gagal", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                Toast.makeText(HistoryActivity.this, "Success", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(HistoryActivity.this, "Success", Toast.LENGTH_SHORT).show();
 //                if (response.body()!= null) {
                 pg1.setVisibility(View.INVISIBLE);
                 recyclerView.setVisibility(View.VISIBLE);
@@ -124,12 +123,19 @@ public class HistoryActivity extends AppCompatActivity {
                     case R.id.home:
                         Intent mtintent = new Intent(HistoryActivity.this, MainActivity.class);
                         startActivity(mtintent);
+                        finish();
                         return true;
                     case R.id.information:
                         Intent mtintent1 = new Intent(HistoryActivity.this, InformationActivity.class);
                         startActivity(mtintent1);
+                        finish();
                         return true;
                     case R.id.history:
+                        return true;
+                    case R.id.grafik:
+                        Intent mtintent2 = new Intent(HistoryActivity.this, GraphActivity.class);
+                        startActivity(mtintent2);
+                        finish();
                         return true;
                     default:
                         return true;

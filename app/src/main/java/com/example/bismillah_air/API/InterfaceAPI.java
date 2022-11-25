@@ -13,6 +13,6 @@ public interface InterfaceAPI {
     @GET("send-mesin/{id}")
     Call<Respon> rp(@Path("id") String id);
 
-    @GET("history/4")
+    @GET("history/6")
     Call<List<History>> getHistory();
 }
