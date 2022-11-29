@@ -5,6 +5,7 @@ xmlns:tools="http://schemas.android.com/tools"
 android:id="@+id/drawerlayout"
 android:layout_width="match_parent"
 android:layout_height="match_parent"
+    android:background="#fff"
 tools:context=".InformationActivity">
 
 
@@ -42,7 +43,7 @@ tools:context=".InformationActivity">
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:fontFamily="@font/centuri"
-        android:text="Information"
+        android:text="Informasi Debu"
         android:textColor="@color/black"
         android:textSize="20dp"
         android:textStyle="bold"
@@ -104,7 +105,7 @@ tools:context=".InformationActivity">
                 android:layout_width="300dp"
                 android:layout_height="80dp"
                 android:fontFamily="@font/monserat"
-                android:text="Setiap udara yang berada di sekitar kita, tentu memiliki berbagai kandungan didalamnya. Kita harus mengetauhi"
+                android:text="Setiap udara yang berada di sekitar kita, tentu memiliki berbagai kandungan didalamnya. Kita harus mengetauhi bagaimana kondisi udara disekita karena itu pun mempengaruhi kesehatan kita"
                 android:textColor="#23610E"
                 android:textSize="12dp"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -117,5 +118,12 @@ tools:context=".InformationActivity">
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
->
+    <com.google.android.material.navigation.NavigationView
+        android:id="@+id/NavigationView"
+        android:layout_width="200dp"
+        android:layout_height="match_parent"
+        app:menu="@menu/menu"
+        app:headerLayout="@layout/layout_navigation_header"
+        android:layout_gravity="start"/>
+
 </androidx.drawerlayout.widget.DrawerLayout>
